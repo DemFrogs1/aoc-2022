@@ -5,21 +5,23 @@ import (
 	"log"
 	"strconv"
 
-	// Helpers "github.com/DemFrogs1/aoc-2022/lib"
-	ParseInput "github.com/DemFrogs1/aoc-2022/lib"
+	"github.com/DemFrogs1/aoc-2022/lib"
 )
 
 const TOP_MAX = 3
 
 func main() {
 	var calories []int
-	data := ParseInput.Parse("input.txt")
 	sum := 0
+
+	data := lib.Parse("input.txt")
+
 	for _, cal := range data {
 		if len(cal) > 0 {
 			n, err := strconv.Atoi(cal)
 			if err != nil {
-				log.Fatalln(err)
+				log.Println(err)
+				continue
 			}
 			sum += n
 			calories = append(calories, sum)
@@ -27,8 +29,10 @@ func main() {
 			sum = 0
 		}
 	}
+
 	max := part1(calories)
 	totalMax := part2(calories)
+
 	fmt.Printf("max is equal to %d total top 3 is equal to %d", max, totalMax)
 }
 
@@ -55,11 +59,7 @@ func part2(calories []int) int {
 	for i := 0; i < TOP_MAX; i++ {
 		max, i := calculateMax(calories)
 		totalMax += max
-		calories = deleteElement(calories, i)
+		calories = lib.DeleteElement(calories, i)
 	}
 	return totalMax
-}
-
-func deleteElement(slice []int, index int) []int {
-	return append(slice[:index], slice[index+1:]...)
 }
